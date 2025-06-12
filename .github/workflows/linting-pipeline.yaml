@@ -17,7 +17,7 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
     
-    # Setup Node.js
+    # Setup Node.js (removed cache line)
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
@@ -31,9 +31,17 @@ jobs:
     # Run HTMLHint on all HTML files
     - name: Run HTMLHint
       run: |
-        npx htmlhint "**/*.html"
+        if ls **/*.html 1> /dev/null 2>&1; then
+          npx htmlhint "**/*.html"
+        else
+          echo "No HTML files found to lint"
+        fi
     
     # Run Stylelint on all CSS files
     - name: Run Stylelint
       run: |
-        npx stylelint "**/*.css"
+        if ls **/*.css 1> /dev/null 2>&1; then
+          npx stylelint "**/*.css"
+        else
+          echo "No CSS files found to lint"
+        fi
