@@ -1,0 +1,47 @@
+name: Linting Pipeline
+
+# Trigger on push and pull request events for develop branch
+on:
+  push:
+    branches: [ develop ]
+  pull_request:
+    branches: [ develop ]
+
+jobs:
+  lint:
+    # Use Ubuntu runner
+    runs-on: ubuntu-latest
+    
+    steps:
+    # Checkout the code
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    # Setup Node.js (removed cache line)
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+    
+    # Install dependencies
+    - name: Install dependencies
+      run: |
+        npm install --save-dev htmlhint stylelint stylelint-config-standard
+    
+    # Run HTMLHint on all HTML files
+    - name: Run HTMLHint
+      run: |
+        if ls **/*.html 1> /dev/null 2>&1; then
+          npx htmlhint "**/*.html"
+        else
+          echo "No HTML files found to lint"
+        fi
+    
+    # Run Stylelint on all CSS files
+    - name: Run Stylelint
+      run: |
+        if ls **/*.css 1> /dev/null 2>&1; then
+          npx stylelint "**/*.css"
+        else
+          echo "No CSS files found to lint"
+        fi
