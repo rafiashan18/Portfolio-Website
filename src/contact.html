@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>contact - portfolio</title>
+    <link rel="stylesheet" href="../styles/contact.css">
+</head>
+<body>
+    <header id="main-header">
+        <nav>
+            <ul>
+                <li><a href="index.html">home</a></li>
+                <li><a href="about.html">about me</a></li>
+                <li><a href="projects.html">projects</a></li>
+                <li><a href="contact.html">contact</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <main>
+        <section id="contact-hero">
+            <h1>get in touch</h1>
+            <p>i would love to hear from you. let's discuss your next project!</p>
+        </section>
+        
+        <section id="contact-content">
+            <div id="contact-info">
+                <h2>contact information</h2>
+                <div class="contact-item">
+                    <h3>email</h3>
+                    <p>your.email@ucp.edu.pk</p>
+                </div>
+                <div class="contact-item">
+                    <h3>phone</h3>
+                    <p>+92 300 1234567</p>
+                </div>
+                <div class="contact-item">
+                    <h3>location</h3>
+                    <p>lahore, pakistan</p>
+                </div>
+                <div class="contact-item">
+                    <h3>social media</h3>
+                    <p>linkedin: /in/yourprofile</p>
+                    <p>github: /yourusername</p>
+                </div>
+            </div>
+            
+            <div id="contact-form">
+                <h2>send a message</h2>
+                <form id="message-form">
+                    <div class="form-group">
+                        <label for="name">full name</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">email address</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="subject">subject</label>
+                        <input type="text" id="subject" name="subject" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">message</label>
+                        <textarea id="message" name="message" rows="5" required></textarea>
+                    </div>
+                    <button type="submit" id="submit-btn">send message</button>
+                </form>
+            </div>
+        </section>
+    </main>
+    
+    <footer>
+        <p>&copy; 2024 portfolio website. all rights reserved.</p>
+    </footer>
+</body>
+</html>
