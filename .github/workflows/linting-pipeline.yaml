@@ -1,47 +1,45 @@
-name: Linting Pipeline
+name: Development Workflow
 
-# Trigger on push and pull request events for develop branch
 on:
   push:
-    branches: [ develop ]
-  pull_request:
-    branches: [ develop ]
+    branches: [develop]
+
 
 jobs:
-  lint:
-    # Use Ubuntu runner
+  build-and-deploy:
+    name: Lint, Build & Deploy to Development Environment
     runs-on: ubuntu-latest
-    
+    environment: development-env
+
     steps:
-    # Checkout the code
-    - name: Checkout code
-      uses: actions/checkout@v4
-    
-    # Setup Node.js (removed cache line)
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '18'
-    
-    # Install dependencies
-    - name: Install dependencies
-      run: |
-        npm install --save-dev htmlhint stylelint stylelint-config-standard
-    
-    # Run HTMLHint on all HTML files
-    - name: Run HTMLHint
-      run: |
-        if ls **/*.html 1> /dev/null 2>&1; then
-          npx htmlhint "**/*.html"
-        else
-          echo "No HTML files found to lint"
-        fi
-    
-    # Run Stylelint on all CSS files
-    - name: Run Stylelint
-      run: |
-        if ls **/*.css 1> /dev/null 2>&1; then
-          npx stylelint "**/*.css"
-        else
-          echo "No CSS files found to lint"
-        fi
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Run HTMLHint
+        run: npx htmlhint .
+      - name: Fix permissions just in case
+        run: chmod +x ./node_modules/.bin/stylelint
+
+
+      - name: Run Stylelint
+        run: npm run lint:css
+
+      - name: Build Project with Parcel
+        run: npx parcel build src/index.html --dist-dir dist
+
+      - name: Deploy to GitHub Pages
+        if: github.ref == 'refs/heads/develop'
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
+          publish_branch: gh-pages-dev
+          destination_dir: .
